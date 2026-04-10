@@ -37,6 +37,22 @@ Search terms used:
 - `windows installer`
 - `mx3 windows`
 
+## Official intake outcome
+
+Official GitHub intake on 2026-04-10:
+- `memryx/MxAccl` has issues disabled
+- `memryx/MxAccl` has discussions disabled
+- direct GitHub-native issue/discussion intake is therefore unavailable on the primary authoritative repo
+
+Fallback official intake used:
+- `memryx/MemryX_eXamples` discussion `#18`
+- title: `Windows docs: verify the MX3 manager boundary before assuming reboot`
+- URL: https://github.com/memryx/MemryX_eXamples/discussions/18
+
+Implication:
+- the authoritative `MxAccl` lane still needs a future narrow PR against its default branch `release`
+- the companion examples discussion is now the live official public breadcrumb for the Windows docs/troubleshooting request
+
 ## Third-party submission protocol followed
 
 1. Conflict scan first: done

@@ -22,6 +22,16 @@ From `CONTRIBUTING.md`:
 - test before submission
 - submit a clear PR description
 
+## Official intake outcome
+
+Official public intake was completed on 2026-04-10 via GitHub Discussions:
+- category: `Ideas`
+- discussion: `#18`
+- title: `Windows docs: verify the MX3 manager boundary before assuming reboot`
+- URL: https://github.com/memryx/MemryX_eXamples/discussions/18
+
+This means the docs/troubleshooting request is no longer local-only. The next upstream step for this companion repo is a narrow docs PR against the default branch `release` when we are ready to submit code/docs changes.
+
 ## Recommended PR shape
 
 Type:
