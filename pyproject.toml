@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mx3-public-shim"
 version = "0.1.0"
-description = "Minimal public-safe MemryX MX3 shim candidate with MemPalace-aligned Chroma helpers"
+description = "NEXUS CONTROL CENTER: a small app for proving LLM inference on MX3 hardware"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

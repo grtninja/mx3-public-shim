@@ -8,7 +8,7 @@
 4. `127.0.0.1:10000` is the MX3 manager/hardware-management boundary.
 5. LM Studio UI and `127.0.0.1:1234/v1` are operator surfaces, not source-of-truth runtime authority.
 
-## Public-safe operating rules
+## Operating rules
 
 - Do not start, stop, or rebind backend runtime services from the public Electron shell.
 - Treat the public app as DFP + feeder + telemetry control only.
@@ -20,6 +20,6 @@
 
 - Unlock hardware before feeder start or restart.
 
-## Public boundary rule
+## Boundary rule
 
 - Keep internal strategy, private machine details, secrets, approval-only language, and non-public service surfaces out of release-facing docs and UI.

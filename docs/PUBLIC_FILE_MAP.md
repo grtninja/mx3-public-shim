@@ -1,6 +1,6 @@
 # Public file map
 
-This document is the exact public-shape map for the MX3 public shim repository.
+This document is the file map for the public MX3 app repository.
 
 ## Top-level structure
 
@@ -19,7 +19,6 @@ This document is the exact public-shape map for the MX3 public shim repository.
 - `package.json`: desktop-shell package manifest.
 - `pyproject.toml`: Python package manifest.
 - `README.md`: public landing doc.
-- `SYNC_FROM_MAIN_REPO.md`: maintainer-only sync redirect.
 
 ## Source package map
 
@@ -41,17 +40,7 @@ This document is the exact public-shape map for the MX3 public shim repository.
 - `docs/UI_VALUE_NOTES.md`
 - `docs/PUBLIC_BOUNDARIES.md`
 
-## Maintainer/reference docs
+## Reference docs
 
-- `docs/CODEX_SETUP_AND_PUBLIC_SYNC.md`
-- `docs/PRIVATE_PUBLIC_EXPORT_WORKFLOW.md`
-- `docs/TRACKED_PUBLIC_REPO.md`
 - `docs/MEMPALACE_CORRELATION.md`
-- `docs/MEMPALACE_PR_CANDIDATE.md`
 - `contrib/mempalace/PR_CANDIDATE.md`
-
-## Mirror rule
-
-- The canonical authoring surface lives in the private shim repo under `public/mx3-public-shim/`.
-- The standalone public repo is the tracked mirror.
-- Public-facing docs must stay mirrored unless a public-safe overlay explicitly replaces them.

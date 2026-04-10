@@ -9,8 +9,6 @@
 
 ## What this repo is not
 
-- It is not the private workstation repo.
-- It is not the full internal control plane.
 - It is not the vendor firmware updater.
 - It is not the place to load or unload LM models from LM Studio.
 
@@ -23,6 +21,6 @@
 - `2236` remains feeder-independent for embeddings.
 - `2337` is the hosted chat side lane.
 
-## Public-safe release rule
+## Release rule
 
-- Do not ship secrets, tokens, private paths, private issue strategy, or workstation-only internal guidance.
+- Do not ship secrets, tokens, private paths, or machine-specific internal guidance.
