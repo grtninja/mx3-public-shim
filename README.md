@@ -82,6 +82,7 @@ These are design targets for the public story, not bundled binaries:
 
 ## Official links
 
+- Public repo: `https://github.com/grtninja/mx3-public-shim`
 - MemryX GitHub: `https://github.com/memryx`
 - MemryX Developer Hub: `https://developer.memryx.com/`
 - MemryX site: `https://memryx.com/`
@@ -154,7 +155,7 @@ The public repo keeps the MemPalace alignment narrow and examples-first. It demo
 
 ## Official links
 
-- Public repo
+- Public repo: `https://github.com/grtninja/mx3-public-shim`
 - MemryX GitHub
 - Developer Hub
 - Patreon

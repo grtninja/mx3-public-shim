@@ -2,7 +2,7 @@
 
 Status: candidate only, not pushed
 Date: 2026-04-10
-Prepared from: `G:\GitHub\memryx-mx3-python-shim`
+Prepared from: canonical private MX3 shim authoring surface
 
 ## Target upstream repo
 
@@ -79,7 +79,7 @@ Contribution rules are explicit:
 - submit a clear PR description
 
 Source:
-- `G:\GitHub\_3rdParty-Clones\MemryX_eXamples\CONTRIBUTING.md`
+- official `memryx/MemryX_eXamples` `CONTRIBUTING.md`
 
 ## Recommended upstream PR shape
 
