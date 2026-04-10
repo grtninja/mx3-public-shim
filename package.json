@@ -1,0 +1,18 @@
+{
+  "name": "mx3-public-shim-desktop",
+  "version": "0.1.0",
+  "productName": "MX3 Public Shim",
+  "description": "MX3 Public Shim desktop shell for local MemryX-backed runtime and memory workflows.",
+  "private": true,
+  "main": "electron/main.js",
+  "engines": {
+    "node": ">=20 <26"
+  },
+  "scripts": {
+    "desktop:start": "node electron/launch.js",
+    "desktop:dev": "node electron/launch.js"
+  },
+  "devDependencies": {
+    "electron": "^41.2.0"
+  }
+}

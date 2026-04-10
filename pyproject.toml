@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mx3-public-shim"
+version = "0.1.0"
+description = "Minimal public-safe MemryX MX3 shim candidate with MemPalace-aligned Chroma helpers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Eddie Silvia" }
+]
+dependencies = [
+  "fastapi>=0.135.3,<1",
+  "uvicorn>=0.44.0,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0.3,<10",
+  "ruff>=0.15.10,<1",
+]
+mempalace = [
+  "chromadb>=0.5,<1",
+]
+
+[project.scripts]
+mx3-public-shim-doctor = "mx3_public_shim.doctor:main"
+mx3-public-shim-server = "mx3_public_shim.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mx3_public_shim"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

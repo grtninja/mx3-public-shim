@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NEXUS CONTROL CENTER: MEMRYX MX3</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel hero-panel">
+        <h1>NEXUS CONTROL CENTER: MEMRYX MX3</h1>
+        <div class="status-pills" aria-label="Current status">
+          <article class="status-pill">
+            <span class="pill-label">Inference Plane</span>
+            <p class="pill-value" id="plane-status">Loading...</p>
+            <p class="pill-note" id="plane-note">Public OpenAI-compatible API</p>
+          </article>
+          <article class="status-pill">
+            <span class="pill-label">MX3 Manager</span>
+            <p class="pill-value" id="manager-status">Loading...</p>
+            <p class="pill-note" id="manager-note">Device boundary and reset lane</p>
+          </article>
+          <article class="status-pill">
+            <span class="pill-label">MX3 Device</span>
+            <p class="pill-value" id="device-status">Loading...</p>
+            <p class="pill-note" id="device-note">Waiting for hardware report</p>
+          </article>
+          <article class="status-pill">
+            <span class="pill-label">Feeder</span>
+            <p class="pill-value" id="feeder-status">Loading...</p>
+            <p class="pill-note" id="feeder-note">Waiting for feeder state</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel quickstart-top-panel">
+        <div class="panel-head compact">
+          <h2>Quick Start</h2>
+        </div>
+        <ol class="step-pills">
+          <li><span class="step-num">1</span><span>Checks green.</span></li>
+          <li><span class="step-num">2</span><span>Load a DFP.</span></li>
+          <li><span class="step-num">3</span><span>Use your AI app on the inference plane.</span></li>
+          <li><span class="step-num">4</span><span>Read telemetry and evidence.</span></li>
+        </ol>
+      </section>
+
+      <section class="workspace-grid">
+        <article class="panel control-panel">
+          <div class="panel-head compact">
+            <h2>Load and Control</h2>
+          </div>
+
+          <section class="control-block">
+            <h3>DFP Runtime</h3>
+            <div class="control-surface">
+              <select class="select-control" id="dfp-select"></select>
+              <div class="button-cluster">
+                <button class="action-btn action-primary" id="apply-dfp-btn" type="button">Apply DFP</button>
+                <button class="action-btn action-secondary" id="import-dfp-btn" type="button">Import DFP</button>
+              </div>
+              <input id="dfp-import-input" type="file" accept=".dfp" hidden />
+            </div>
+          </section>
+
+          <section class="control-block">
+            <h3>Feeder</h3>
+            <div class="control-surface control-surface-stack">
+              <div class="button-cluster">
+                <button class="action-btn action-primary" id="unlock-mx3-btn" type="button">Unlock MX3</button>
+                <button class="action-btn action-primary" id="start-feeder-btn" type="button">Start Feeder</button>
+                <button class="action-btn action-secondary" id="stop-feeder-btn" type="button">Stop Feeder</button>
+                <button class="action-btn action-secondary" id="reset-feeder-btn" type="button">Reset Feeder</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="action-row aux-actions button-cluster">
+            <button class="action-btn action-secondary" id="refresh-runtime-btn" type="button">Refresh</button>
+            <button class="action-btn action-secondary" id="validate-mx3-btn" type="button">Validate MX3</button>
+          </div>
+
+          <ul class="clean-list summary-list" id="runtime-summary-list">
+            <li>Loading...</li>
+          </ul>
+          <div class="status-strip" id="control-status">Waiting for runtime...</div>
+        </article>
+
+        <article class="panel telemetry-panel">
+          <div class="panel-head compact">
+            <h2>Live Hardware Telemetry</h2>
+          </div>
+          <div class="metric-grid">
+            <article class="metric-card">
+              <h3>Utilization</h3>
+              <p class="card-value" id="metric-utilization">Loading...</p>
+            </article>
+            <article class="metric-card">
+              <h3>Driver</h3>
+              <p class="card-value" id="metric-driver">Loading...</p>
+            </article>
+            <article class="metric-card">
+              <h3>Chips</h3>
+              <p class="card-value" id="metric-chips">Loading...</p>
+            </article>
+            <article class="metric-card">
+              <h3>Temperature</h3>
+              <p class="card-value" id="metric-temperature">Loading...</p>
+            </article>
+            <article class="metric-card">
+              <h3>Throughput</h3>
+              <p class="card-value" id="metric-throughput">Loading...</p>
+            </article>
+            <article class="metric-card">
+              <h3>Requests</h3>
+              <p class="card-value" id="metric-requests">Loading...</p>
+            </article>
+          </div>
+          <div class="graph-grid">
+            <article class="graph-card">
+              <h3 id="runtime-value">Loading...</h3>
+              <p class="note" id="runtime-note">Waiting for runtime telemetry</p>
+              <svg viewBox="0 0 220 56" class="sparkline" aria-label="Runtime trend">
+                <polyline id="latency-graph"></polyline>
+              </svg>
+            </article>
+            <article class="graph-card">
+              <h3 id="thermal-value">Loading...</h3>
+              <p class="note" id="thermal-note">Waiting for sensor report</p>
+              <svg viewBox="0 0 220 56" class="sparkline" aria-label="Thermal trend">
+                <polyline id="thermal-graph"></polyline>
+              </svg>
+            </article>
+            <article class="graph-card counter-card">
+              <h3 id="tpk-value">Loading...</h3>
+              <p class="note" id="tpk-note">Waiting for TPK telemetry</p>
+            </article>
+            <article class="graph-card counter-card">
+              <h3 id="savings-value">Loading...</h3>
+              <p class="note" id="savings-note">Waiting for savings telemetry</p>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section class="details-grid details-grid-single">
+        <details class="panel detail-panel">
+          <summary>
+            <span>Routing Details</span>
+            <span class="summary-note" id="routing-card-title">Loading...</span>
+          </summary>
+          <ul class="clean-list" id="active-path-list">
+            <li>Loading...</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="support-grid support-grid-single">
+        <article class="panel compact-panel about-panel">
+          <h2>About</h2>
+          <p class="section-kicker">Public developer note</p>
+          <p class="about-note">Built by grtninja. Windows-first MemryX MX3 control center for local hardware telemetry, DFP validation, feeder routing, and real-device evidence.</p>
+          <div class="action-row link-row">
+            <button class="action-btn action-secondary copy-link-btn" type="button" data-copy="https://github.com/grtninja/mx3-public-shim" data-copy-label="Public Repo">Public Repo</button>
+            <button class="action-btn action-secondary copy-link-btn" type="button" data-copy="https://github.com/grtninja/mx3-public-shim/issues" data-copy-label="Issues">Issues</button>
+            <button class="action-btn action-secondary copy-link-btn" type="button" data-copy="https://github.com/grtninja/mx3-public-shim/security" data-copy-label="Security">Security</button>
+            <button class="action-btn action-secondary copy-link-btn" type="button" data-copy="https://github.com/MemryXInc" data-copy-label="MemryX GitHub">MemryX GitHub</button>
+            <button class="action-btn action-secondary copy-link-btn" type="button" data-copy="https://developer.memryx.com/" data-copy-label="Developer Hub">Developer Hub</button>
+            <button class="action-btn action-primary copy-link-btn" type="button" data-copy="https://www.patreon.com/cw/grtninja" data-copy-label="Patreon">Support on Patreon</button>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
