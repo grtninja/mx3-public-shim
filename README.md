@@ -20,6 +20,18 @@ Without supported MemryX hardware, the MX3 device path, DFP runtime controls, fe
 4. Shows live telemetry, latency, TPK, thermals, and savings estimates.
 5. Keeps LM model loading in LM Studio or your preferred inference app.
 
+## How this helps MemPalace
+
+This app does not try to replace MemPalace.
+
+It helps MemPalace at the exact seams that matter most for local retrieval:
+
+1. faster local embeddings for Chroma ingest and query
+2. an optional local rerank step after retrieval
+3. visible hardware proof, latency, TPK, and savings evidence instead of vague acceleration claims
+
+That makes it easier to keep MemPalace's memory structure and workflow intact while improving the expensive parts around vector search.
+
 ## What TPK means
 
 `TPK` means `tokens per kilowatt-hour`.
@@ -86,6 +98,8 @@ npm run desktop:start
 - MemryX GitHub: `https://github.com/memryx`
 - MemryX Developer Hub: `https://developer.memryx.com/`
 - MemryX site: `https://memryx.com/`
+- MemPalace correlation: `docs/MEMPALACE_CORRELATION.md`
+- MemPalace example: `contrib/mempalace/examples/mx3_shim_chroma_accel.md`
 
 ## Support development
 
