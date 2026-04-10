@@ -6,6 +6,12 @@
 
 Use it to validate the MX3 path, load DFP runtimes, control feeder state, and read live hardware telemetry.
 
+## Hardware requirement
+
+This app requires a MemryX AI Accelerator.
+
+Without supported MemryX hardware, the MX3 device path, DFP runtime controls, feeder controls, and live hardware telemetry will not become active.
+
 ## What it does
 
 1. Checks the MX3 path and manager boundary.

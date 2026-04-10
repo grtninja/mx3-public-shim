@@ -1,5 +1,11 @@
 # Human quickstart
 
+## Hardware requirement
+
+This app requires a MemryX AI Accelerator.
+
+If the hardware is not present, the MX3 path will not validate and the DFP, feeder, and telemetry surfaces will stay unavailable.
+
 ## First-use path
 
 1. Open the desktop app.
