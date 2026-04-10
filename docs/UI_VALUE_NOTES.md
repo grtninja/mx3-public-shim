@@ -31,8 +31,8 @@ This glossary describes the visible values in the public desktop app.
 - `Requests`: request count seen by the public runtime surface.
 - `Rolling average latency`: recent smoothed latency window, not a single raw request.
 - `Source probe age`: age of the telemetry sample currently displayed.
-- `TPK`: transparent per-token measurement derived from the live local lane when available.
-- `Estimated savings`: local-versus-cloud estimate derived from the current local runtime evidence.
+- `TPK`: `tokens per kilowatt-hour`. In plain English, how much text the system produced for the electricity it used. Higher is better. It matters because this app is supposed to prove real MX3-backed inference, not just that a response appeared on screen.
+- `Estimated savings`: a simple local-versus-cloud comparison derived from current local runtime evidence. Treat it as a directional estimate, not a bill.
 
 ## Routing Details
 

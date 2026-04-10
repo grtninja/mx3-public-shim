@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest an improvement for the public MX3 control surface.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      placeholder: What should be easier, clearer, or more useful?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      placeholder: Describe the improvement you want to see.
+    validations:
+      required: true
+  - type: textarea
+    id: operator_value
+    attributes:
+      label: Why it matters
+      placeholder: Explain how this helps prove or operate MX3 inference better.

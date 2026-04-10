@@ -1,6 +1,8 @@
-# MX3 Public Shim
+# NEXUS CONTROL CENTER: MemryX MX3
 
 `NEXUS CONTROL CENTER` is a small app for proving LLM inference on MX3 hardware.
+
+![NEXUS CONTROL CENTER app screenshot](docs/images/nexus-control-center-reference.png)
 
 Use it to validate the MX3 path, load DFP runtimes, control feeder state, and read live hardware telemetry.
 
@@ -11,6 +13,20 @@ Use it to validate the MX3 path, load DFP runtimes, control feeder state, and re
 3. Starts, stops, unlocks, and resets feeder state.
 4. Shows live telemetry, latency, TPK, thermals, and savings estimates.
 5. Keeps LM model loading in LM Studio or your preferred inference app.
+
+## What TPK means
+
+`TPK` means `tokens per kilowatt-hour`.
+
+In simple terms, it answers one question: how much text did the system produce for the electricity it used?
+
+Why it matters here:
+
+- this repo is meant to prove real local MX3-backed inference, not just that a UI loaded
+- TPK gives you a simple efficiency number you can compare across runs
+- it helps show whether feeder state, DFP selection, and hardware routing are producing better real-device results
+
+If TPK shows `n/a` or `Preview`, the app has not captured enough verified local evidence yet.
 
 ## Quick start
 

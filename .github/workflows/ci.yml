@@ -1,19 +1,15 @@
-name: ci
+name: CI
 
 on:
   push:
-    paths:
-      - 'public/mx3-public-shim/**'
+    branches: ["main"]
   pull_request:
-    paths:
-      - 'public/mx3-public-shim/**'
 
 jobs:
-  lint-test:
+  python-checks:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: public/mx3-public-shim
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

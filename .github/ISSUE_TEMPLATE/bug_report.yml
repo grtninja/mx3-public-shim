@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a reproducible problem in NEXUS CONTROL CENTER or the public shim surface.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug.
+
+        Please keep reports focused on the public repo surface and remove private paths, usernames, API keys, or other personal details before posting.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+      placeholder: Briefly describe the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What exact steps reproduce the issue?
+      placeholder: |
+        1. Open the app
+        2. Select ...
+        3. Click ...
+        4. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Share only non-sensitive environment details.
+      placeholder: |
+        - OS:
+        - Python:
+        - Driver:
+        - App version/commit:
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, screenshots, or values shown in the UI. Remove any sensitive details first.
