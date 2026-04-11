@@ -30,22 +30,23 @@ def main() -> None:
         collection.add(
             ids=["1", "2", "3"],
             documents=[
-                "The agent keeps a skeptical pointer ledger for uncertain facts.",
-                "The local stack uses shadow memory to preserve continuity before compaction.",
+                "The local stack keeps a verification queue for notes that need confirmation.",
+                "The workstation stores a short MX3 setup checklist for repeatable bring-up.",
                 "A gardening notebook with watering reminders.",
             ],
             metadatas=[
-                {"wing": "continuity"},
-                {"wing": "shadow-memory"},
+                {"wing": "verification"},
+                {"wing": "operations"},
                 {"wing": "personal"},
             ],
         )
         raw = collection.query(
-            query_texts=["How does the system preserve continuity?"], n_results=3
+            query_texts=["How does the system track notes that need confirmation?"],
+            n_results=3,
         )
         hits = chroma_query_to_hits(raw)
         reranked = rerank_search_hits(
-            "How does the system preserve continuity?",
+            "How does the system track notes that need confirmation?",
             hits,
             runtime,
         )

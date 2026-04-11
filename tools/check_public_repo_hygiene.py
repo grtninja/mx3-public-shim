@@ -33,6 +33,22 @@ ALLOWED_ROOT_ITEMS = {
     "tools",
 }
 
+SOURCE_ONLY_ROOT_ITEMS = {
+    "SYNC_FROM_MAIN_REPO.md",
+    "export_overlay",
+}
+
+EXCLUDED_RELATIVE_PATHS = {
+    "SYNC_FROM_MAIN_REPO.md",
+    "docs/CODEX_SETUP_AND_PUBLIC_SYNC.md",
+    "docs/PRIVATE_PUBLIC_EXPORT_WORKFLOW.md",
+    "docs/TRACKED_PUBLIC_REPO.md",
+    "docs/MEMPALACE_PR_CANDIDATE.md",
+    "contrib/mempalace/PR_CANDIDATE.md",
+    "contrib/memryx/MxAccl_WINDOWS_RECOVERY_PR_CANDIDATE.md",
+    "contrib/memryx/MemryX_eXamples_COMPANION_PR_CANDIDATE.md",
+}
+
 BLOCKED_LITERALS = [
     phrase("public", "-safe"),
     phrase("thin", " shim", " candidate"),
@@ -49,6 +65,42 @@ BLOCKED_TEXT_PATTERNS = {
     "windows-user-path": re.compile(r"[A-Za-z]:\\Users\\[A-Za-z0-9._-]+"),
     "unix-home-path": re.compile(r"/home/[A-Za-z0-9._-]+"),
     "mac-home-path": re.compile(r"/Users/[A-Za-z0-9._-]+"),
+    "blocked-lore-a": re.compile(
+        r"\b" + phrase("shadow") + r"(?:-|\s+)" + phrase("memory") + r"\b",
+        re.IGNORECASE,
+    ),
+    "blocked-lore-b": re.compile(
+        r"\b"
+        + phrase("skeptical")
+        + r"(?:\s+"
+        + phrase("pointer")
+        + r"s?|\-"
+        + phrase("memory")
+        + r")\b",
+        re.IGNORECASE,
+    ),
+    "blocked-lore-c": re.compile(
+        r"\b" + phrase("pointer") + r"\s+" + phrase("ledger") + r"\b",
+        re.IGNORECASE,
+    ),
+    "blocked-lore-d": re.compile(
+        r"\b" + phrase("continuity") + r"\s+(?:before|after)\s+" + phrase("compaction") + r"\b",
+        re.IGNORECASE,
+    ),
+    "blocked-lore-e": re.compile(
+        r"\b(?:"
+        + "|".join(
+            [
+                phrase("Penny", "GPT"),
+                phrase("STAR", "FRAME"),
+                phrase("Mesh", "GPT"),
+                phrase("Guardian", "Trace"),
+                phrase("Meta", "Ranker"),
+            ]
+        )
+        + r")\b",
+        re.IGNORECASE,
+    ),
 }
 
 SECRET_PATTERNS = {
@@ -84,13 +136,31 @@ TEXT_SUFFIXES = {
     ".yml",
 }
 
+REQUIRED_TEXT_MARKERS = {
+    "README.md": [
+        "memryx-shim-provider",
+        "https://www.lmstudio.ai/grtninja/memryx-shim-provider",
+        "LM model loading belongs to LM Studio, not this app.",
+    ],
+    "CONTRIBUTING.md": [
+        "## Shared release order",
+        "authoritative shim change",
+        "published plugin",
+        "public shim",
+        "internal stack lore",
+    ],
+}
+
 
 def iter_all_files(root: Path) -> list[Path]:
     files: list[Path] = []
     for path in sorted(root.rglob("*")):
+        rel = path.relative_to(root)
         if path.is_dir():
             continue
         if ".git" in path.parts:
+            continue
+        if rel.as_posix() in EXCLUDED_RELATIVE_PATHS:
             continue
         files.append(path)
     return files
@@ -109,6 +179,8 @@ def main() -> int:
 
     for child in ROOT.iterdir():
         if child.name == ".git":
+            continue
+        if child.name in SOURCE_ONLY_ROOT_ITEMS:
             continue
         if child.name not in ALLOWED_ROOT_ITEMS:
             findings.append(
@@ -166,6 +238,15 @@ def main() -> int:
                         "kind": "secret-pattern",
                         "path": rel,
                         "detail": f"matched possible {label} secret pattern",
+                    }
+                )
+        for marker in REQUIRED_TEXT_MARKERS.get(rel, []):
+            if marker not in text:
+                findings.append(
+                    {
+                        "kind": "missing-required-marker",
+                        "path": rel,
+                        "detail": f"missing required marker: {marker}",
                     }
                 )
 

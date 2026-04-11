@@ -33,16 +33,16 @@ def fetch_embeddings(texts: list[str]) -> list[list[float]]:
 
 def main() -> None:
     documents = [
-        "Shadow memory preserves continuity before compaction.",
-        "Skeptical pointers mark uncertain facts for later verification.",
+        "A local retrieval queue keeps notes that still need verification.",
+        "The workstation stores a short MX3 setup checklist for repeatable bring-up.",
         "This note is about watering tomatoes in the backyard.",
     ]
     metadatas = [
-        {"wing": "continuity"},
-        {"wing": "skeptical-memory"},
+        {"wing": "verification"},
+        {"wing": "operations"},
         {"wing": "personal"},
     ]
-    query = "How does the system keep continuity after compaction?"
+    query = "How does the system track notes that still need verification?"
 
     with tempfile.TemporaryDirectory() as tmpdir:
         client = PersistentClient(path=str(Path(tmpdir)))
