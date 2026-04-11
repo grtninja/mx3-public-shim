@@ -30,8 +30,20 @@ Keep this repo product-facing.
 
 - Do not add private repo names, private workstation paths, usernames, or secrets.
 - Do not add internal export-pipeline language to public docs.
+- Do not add internal stack lore, internal codenames, or private workflow phrasing to public docs, UI copy, or examples.
 - Keep LM model loading outside this app.
 - Treat the desktop shell as a control and telemetry surface over an already-running backend.
+
+## Shared release order
+
+If a change affects behavior shared with the LM Studio plugin or the source shim:
+
+1. land and validate the authoritative shim change first
+2. sync or publish the published plugin `memryx-shim-provider`
+3. update this public shim repo last
+
+Public repo PRs should reflect already-validated plugin and shim behavior, not
+invent a future shared state that has not been shipped yet.
 
 ## Pull requests
 

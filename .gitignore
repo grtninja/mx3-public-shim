@@ -5,3 +5,6 @@ __pycache__/
 .continue/
 *.pyc
 .venv/
+node_modules/
+build/
+dist/

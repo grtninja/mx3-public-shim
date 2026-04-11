@@ -77,6 +77,16 @@ LM model loading belongs to LM Studio, not this app.
 
 The desktop app is frontend-only. It should be used as a control and telemetry surface over an already-running backend.
 
+## LM Studio plugin
+
+If you want LM Studio to talk to the same local shim plane, pair this repo with
+the published generator plugin `memryx-shim-provider`.
+
+Download/install page: `https://www.lmstudio.ai/grtninja/memryx-shim-provider`
+
+That plugin is an adapter over `http://127.0.0.1:9000/v1`. It should not change
+model authority, and it should not load or unload models for you.
+
 ## Python quick start
 
 ```bash
