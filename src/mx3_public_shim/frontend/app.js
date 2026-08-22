@@ -252,7 +252,7 @@ async function postJson(url, body) {
   const text = await response.text();
   const payload = text ? JSON.parse(text) : {};
   if (!response.ok) {
-    const detail = payload?.detail || payload?.message || response.statusText;
+    const detail = payload?.detail || payload?.message || payload?.error || response.statusText;
     throw new Error(`${url} -> ${response.status} ${detail}`);
   }
   return payload;

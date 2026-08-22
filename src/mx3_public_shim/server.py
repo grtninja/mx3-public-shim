@@ -7,6 +7,13 @@ import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 
+from .auth import (
+    SESSION_COOKIE_NAME,
+    cors_headers_for_origin,
+    ensure_api_token,
+    mutation_auth_error,
+    preflight_response,
+)
 from .config import Settings
 from .doctor import build_doctor_report
 from .runtime import LocalRuntime
@@ -19,9 +26,32 @@ def build_app(settings: Settings | None = None) -> FastAPI:
     runtime = LocalRuntime(resolved)
     app = FastAPI(title=resolved.frontend_title)
 
+    @app.middleware("http")
+    async def loopback_security_guard(request: Request, call_next):
+        if request.method.upper() == "OPTIONS":
+            return preflight_response(request)
+        if request.method.upper() in {"POST", "PUT", "PATCH", "DELETE"}:
+            auth_error = mutation_auth_error(request, resolved)
+            if auth_error is not None:
+                return auth_error
+        response = await call_next(request)
+        for key, value in cors_headers_for_origin(
+            str(request.headers.get("Origin", "")).strip()
+        ).items():
+            response.headers.setdefault(key, value)
+        return response
+
     @app.get("/")
     def root() -> FileResponse:
-        return FileResponse(FRONTEND_DIR / "index.html")
+        response = FileResponse(FRONTEND_DIR / "index.html")
+        response.set_cookie(
+            SESSION_COOKIE_NAME,
+            ensure_api_token(resolved),
+            httponly=True,
+            samesite="strict",
+            path="/",
+        )
+        return response
 
     @app.get("/styles.css")
     def styles() -> FileResponse:

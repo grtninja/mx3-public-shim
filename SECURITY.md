@@ -22,6 +22,9 @@ Security-sensitive areas include:
 
 - local-first
 - loopback-local
+- unsafe HTTP methods require a local bearer token by default
+- browser-origin requests are restricted to loopback origins; wildcard and
+  `Origin: null` access is rejected
 - fail-closed on privacy uncertainty
 - no public commit of private paths, usernames, or secrets
 

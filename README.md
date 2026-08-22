@@ -95,6 +95,16 @@ python -m mx3_public_shim.doctor
 python -m mx3_public_shim.server
 ```
 
+The local OpenAI-compatible POST endpoints require a bearer token by default.
+Set `MX3_PUBLIC_SHIM_API_TOKEN` and send
+`Authorization: Bearer <token>` from trusted local clients. If no token is
+configured, the server creates a per-user token file for the local account.
+The bundled browser UI obtains an HttpOnly, same-site session cookie when its
+root page loads, so it continues to work without exposing the token to
+JavaScript. External local clients must use the bearer token.
+Only set `MX3_PUBLIC_SHIM_ALLOW_UNAUTHENTICATED_POSTS=1` for isolated
+compatibility testing; do not use that mode for a normal workstation session.
+
 ## Desktop quick start
 
 ```bash

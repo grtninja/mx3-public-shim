@@ -5,12 +5,14 @@ def test_settings_from_env(monkeypatch):
     monkeypatch.setenv("MX3_PUBLIC_SHIM_PROVIDER_ORDER", "cpu_reference,openai_compat")
     monkeypatch.setenv("MX3_PUBLIC_SHIM_OPENAI_BASE_URL", "http://127.0.0.1:9999/v1")
     monkeypatch.setenv("MX3_PUBLIC_SHIM_CPU_EMBED_DIMS", "8")
+    monkeypatch.setenv("MX3_PUBLIC_SHIM_API_TOKEN", "local-token")
 
     settings = Settings.from_env()
 
     assert settings.provider_order == ("cpu_reference", "openai_compat")
     assert settings.openai_base_url == "http://127.0.0.1:9999/v1"
     assert settings.cpu_embedding_dimensions == 8
+    assert settings.api_token == "local-token"
 
 
 def test_public_dict_redacts_api_key(monkeypatch):
@@ -19,3 +21,11 @@ def test_public_dict_redacts_api_key(monkeypatch):
     settings = Settings.from_env()
 
     assert settings.public_dict()["openai_api_key"] == "configured"
+
+
+def test_public_dict_redacts_inbound_api_token(monkeypatch):
+    monkeypatch.setenv("MX3_PUBLIC_SHIM_API_TOKEN", "secret-token")
+
+    settings = Settings.from_env()
+
+    assert settings.public_dict()["api_token"] == "configured"

@@ -16,6 +16,8 @@ class Settings:
     request_timeout_seconds: float = 20.0
     cpu_embedding_dimensions: int = 16
     frontend_title: str = "MX3 Public Shim"
+    api_token: str | None = None
+    allow_unauthenticated_posts: bool = False
 
     @classmethod
     def from_env(cls) -> Settings:
@@ -41,9 +43,15 @@ class Settings:
             ),
             cpu_embedding_dimensions=int(os.getenv("MX3_PUBLIC_SHIM_CPU_EMBED_DIMS", "16")),
             frontend_title=os.getenv("MX3_PUBLIC_SHIM_FRONTEND_TITLE", "MX3 Public Shim"),
+            api_token=os.getenv("MX3_PUBLIC_SHIM_API_TOKEN"),
+            allow_unauthenticated_posts=os.getenv("MX3_PUBLIC_SHIM_ALLOW_UNAUTHENTICATED_POSTS", "")
+            .strip()
+            .lower()
+            in {"1", "true", "yes", "on"},
         )
 
     def public_dict(self) -> dict[str, Any]:
         payload = asdict(self)
         payload["openai_api_key"] = "configured" if self.openai_api_key else None
+        payload["api_token"] = "configured" if self.api_token else None
         return payload
