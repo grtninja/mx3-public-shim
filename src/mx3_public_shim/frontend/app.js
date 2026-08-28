@@ -23,7 +23,7 @@ const KNOWN_DFPS = [
 const PREVIEW_STATE = {
   live: false,
   planeStatus: 'Preview',
-  planeNote: 'Inference plane preview',
+  planeNote: 'MX3 support-only service preview',
   managerStatus: 'Preview',
   managerNote: `MX3 manager ${MX3_MANAGER.host}:${MX3_MANAGER.port}`,
   deviceStatus: 'MX3 preview',
@@ -55,9 +55,8 @@ const PREVIEW_STATE = {
     'Feeder state: standby',
   ],
   activePath: [
-    'Inference: 127.0.0.1:9000/v1',
-    'Embeddings: 127.0.0.1:2236/v1',
-    'Telemetry: 127.0.0.1:9000',
+    'LM Studio: 127.0.0.1:1234/v1',
+    'MX3 support: 127.0.0.1:9000',
     'Feeder: standby',
   ],
   dfpOptions: KNOWN_DFPS.map((item) => ({ ...item, path: null, available: false })),
@@ -68,7 +67,7 @@ const realtimeWindow = { latency: [], throughput: [], tpk: [] };
 let runtimeState = PREVIEW_STATE;
 let importedDfps = loadJsonStorage('mx3PublicShim.importedDfps', []);
 let selectedDfpKey = loadTextStorage('mx3PublicShim.selectedDfp', 'tokenlane');
-let lastGoodPlane = loadTextStorage('mx3PublicShim.lastGoodPlane', '127.0.0.1:9000');
+let lastGoodPlane = loadTextStorage('mx3PublicShim.lastGoodPlane', '127.0.0.1:1234/v1');
 let refreshInFlight = false;
 let dfpCatalogCache = null;
 const REQUEST_TIMEOUT_MS = 4000;
@@ -518,7 +517,7 @@ function buildStateFromLive(health, telemetryReport, modelState, feederConfig, d
   return {
     live: planeOnline,
     planeStatus: planeOnline ? 'Online' : 'Offline',
-    planeNote: shortEndpoint('http://127.0.0.1:9000/v1'),
+    planeNote: `LM Studio ${shortEndpoint('http://127.0.0.1:1234/v1')} • MX3 support ${shortEndpoint('http://127.0.0.1:9000')}`,
     managerStatus: deviceDetected ? 'Present' : 'Unknown',
     managerNote: `${MX3_MANAGER.host}:${MX3_MANAGER.port} (MXA Manager)`,
     deviceStatus: deviceDetected ? 'MX3 detected' : 'MX3 unavailable',
@@ -559,9 +558,8 @@ function buildStateFromLive(health, telemetryReport, modelState, feederConfig, d
       `MX3 manager: ${MX3_MANAGER.host}:${MX3_MANAGER.port}`,
     ],
     activePath: [
-      `Inference: ${shortEndpoint('http://127.0.0.1:9000/v1')}`,
-      `Hosted: ${shortEndpoint('http://127.0.0.1:2337/v1')}`,
-      `Embeddings: ${shortEndpoint(embedTruth.active_embedding_location || 'http://127.0.0.1:2236/v1')}`,
+      `LM Studio: ${shortEndpoint('http://127.0.0.1:1234/v1')}`,
+      `MX3 support: ${shortEndpoint('http://127.0.0.1:9000')}`,
       `MX3 manager: ${MX3_MANAGER.host}:${MX3_MANAGER.port}`,
       `Telemetry: ${shortEndpoint('http://127.0.0.1:9000')}`,
       `Route mode: ${routeMode}`,

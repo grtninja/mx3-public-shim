@@ -8,7 +8,7 @@ from typing import Any
 @dataclass(slots=True)
 class Settings:
     provider_order: tuple[str, ...] = ("mx3_linux", "openai_compat", "cpu_reference")
-    openai_base_url: str | None = "http://127.0.0.1:9000/v1"
+    openai_base_url: str | None = "http://127.0.0.1:1234/v1"
     openai_api_key: str | None = None
     chat_model: str = "huihui-qwen3.5-27b-abliterated"
     embedding_model: str = "text-embedding-nomic-embed-text-v1.5"
@@ -28,7 +28,7 @@ class Settings:
         return cls(
             provider_order=provider_order or cls.provider_order,
             openai_base_url=os.getenv(
-                "MX3_PUBLIC_SHIM_OPENAI_BASE_URL", "http://127.0.0.1:9000/v1"
+                "MX3_PUBLIC_SHIM_OPENAI_BASE_URL", "http://127.0.0.1:1234/v1"
             ),
             openai_api_key=os.getenv("MX3_PUBLIC_SHIM_OPENAI_API_KEY"),
             chat_model=os.getenv("MX3_PUBLIC_SHIM_CHAT_MODEL", "huihui-qwen3.5-27b-abliterated"),
