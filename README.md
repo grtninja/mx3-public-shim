@@ -1,91 +1,72 @@
 # NEXUS CONTROL CENTER: MemryX MX3
 
-`NEXUS CONTROL CENTER` is a small app for proving LLM inference on MX3 hardware.
+`NEXUS CONTROL CENTER` is a public Windows-first application for controlling, observing, and validating MemryX MX3 device workflows.
 
 ![NEXUS CONTROL CENTER app screenshot](docs/images/nexus-control-center-reference.png)
 
-Use it to validate the MX3 path, load DFP runtimes, control feeder state, and read live hardware telemetry.
+Use it to validate the MX3 device path, load DFP runtimes, control feeder state, and inspect current hardware telemetry and evidence.
 
 ## Hardware requirement
 
-This app requires a MemryX AI Accelerator.
+The physical-hardware workflow uses a supported MemryX AI Accelerator. Development and interface tests use explicitly labeled fixtures with synthetic provenance. Real-device acceptance uses current physical-device, DFP, feeder, execution, and telemetry evidence.
 
-Without supported MemryX hardware, the MX3 device path, DFP runtime controls, feeder controls, and live hardware telemetry will not become active.
+## Product capabilities
 
-## What it does
+1. Checks MX3 device and manager readiness.
+2. Inventories, loads, and switches admitted DFP runtime targets.
+3. Controls feeder start, stop, unlock, reset, and recovery through owned lifecycle paths.
+4. Shows current device identity, telemetry, latency, throughput, thermals, TPK, and savings evidence.
+5. Presents a public desktop control and telemetry workflow over the repository-owned backend.
+6. Supports local embedding and reranking examples for memory and retrieval applications.
+7. Keeps language-model loading and residency with the selected model host.
 
-1. Checks the MX3 path and manager boundary.
-2. Loads and switches DFP runtime targets.
-3. Starts, stops, unlocks, and resets feeder state.
-4. Shows live telemetry, latency, TPK, thermals, and savings estimates.
-5. Keeps LM model loading in LM Studio or your preferred inference app.
+## Runtime roles
 
-## How this helps MemPalace
+- `http://127.0.0.1:1234/v1` — local model host when LM Studio is selected.
+- `http://127.0.0.1:9000` — MX3 device, DFP, feeder, telemetry, and compatibility service plane.
+- `http://127.0.0.1:2236/v1` — dedicated embedding lane where configured.
+- `http://127.0.0.1:2337/v1` — explicitly selected optional hosted chat lane.
+- `http://127.0.0.1:10000` — internal MX3 manager and hardware boundary.
 
-This app does not try to replace MemPalace.
+The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth. The desktop application owns the visible Control Center workflow.
 
-It helps MemPalace at the exact seams that matter most for local retrieval:
+## MemPalace integration
 
-1. faster local embeddings for Chroma ingest and query
-2. an optional local rerank step after retrieval
-3. visible hardware proof, latency, TPK, and savings evidence instead of vague acceleration claims
+Nexus Control Center can support MemPalace-style local retrieval at the accelerator seams while preserving the memory application's own structure and workflow:
 
-That makes it easier to keep MemPalace's memory structure and workflow intact while improving the expensive parts around vector search.
+1. local embeddings for Chroma ingest and query;
+2. optional local reranking after retrieval;
+3. current hardware identity, latency, TPK, and savings evidence;
+4. explicit provenance for each accelerated route.
 
-## What TPK means
+## TPK
 
-`TPK` means `tokens per kilowatt-hour`.
+`TPK` means `tokens per kilowatt-hour`. It expresses how much useful token output a measured workflow produced for its energy use.
 
-In simple terms, it answers one question: how much text did the system produce for the electricity it used?
-
-Why it matters here:
-
-- this repo is meant to prove real local MX3-backed inference, not just that a UI loaded
-- TPK gives you a simple efficiency number you can compare across runs
-- it helps show whether feeder state, DFP selection, and hardware routing are producing better real-device results
-
-If TPK shows `n/a` or `Preview`, the app has not captured enough verified local evidence yet.
+A current TPK value requires admitted execution and energy evidence. The UI keeps TPK visibly unavailable or in a clearly labeled preview state until the required evidence exists.
 
 ## Quick start
 
-### For humans
+### Human workflow
 
-1. Checks green.
-2. Load a DFP.
-3. Use your AI app on the inference plane.
-4. Read telemetry and evidence.
+1. Confirm checks and device identity.
+2. Select and load an admitted DFP.
+3. Use the configured model or application route.
+4. Review feeder state, telemetry, execution evidence, and output.
 
 More detail:
+
 - `docs/HUMAN_QUICKSTART.md`
 - `docs/UI_VALUE_NOTES.md`
 
-### For AI agents
+### AI-agent workflow
 
-Use the agent contract here:
+Use the public agent contract and boundaries:
+
+- `AGENTS.md`
 - `docs/AGENT_QUICKSTART.md`
 - `docs/PUBLIC_BOUNDARIES.md`
 - `docs/PUBLIC_FILE_MAP.md`
-
-## Runtime
-
-- `http://127.0.0.1:9000/v1` is the aggregate inference plane.
-- `http://127.0.0.1:10000` is the MX3 manager and device boundary.
-- `http://127.0.0.1:2236/v1` is the embedding lane.
-- `http://127.0.0.1:2337/v1` is the hosted chat lane.
-
-LM model loading belongs to LM Studio, not this app.
-
-The desktop app is frontend-only. It should be used as a control and telemetry surface over an already-running backend.
-
-## LM Studio plugin
-
-If you want LM Studio to talk to the same local shim plane, pair this repo with
-the published generator plugin `memryx-shim-provider`.
-
-Download/install page: `https://www.lmstudio.ai/grtninja/memryx-shim-provider`
-
-That plugin is an adapter over `http://127.0.0.1:9000/v1`. It should not change
-model authority, and it should not load or unload models for you.
 
 ## Python quick start
 
@@ -102,9 +83,17 @@ npm install
 npm run desktop:start
 ```
 
+## LM Studio integration
+
+The published generator plugin `memryx-shim-provider` can connect LM Studio workflows to admitted MX3 compatibility capabilities.
+
+Install page: `https://www.lmstudio.ai/grtninja/memryx-shim-provider`
+
+The plugin remains an adapter. LM Studio retains ownership of its loaded language models; the MX3 backend retains ownership of device, DFP, feeder, telemetry, and accelerator execution state.
+
 ## Official links
 
-- Public repo: `https://github.com/grtninja/mx3-public-shim`
+- Public repository: `https://github.com/grtninja/mx3-public-shim`
 - MemryX GitHub: `https://github.com/memryx`
 - MemryX Developer Hub: `https://developer.memryx.com/`
 - MemryX site: `https://memryx.com/`
@@ -119,7 +108,12 @@ npm run desktop:start
 ## Validation
 
 ```bash
+python tools/check_public_repo_hygiene.py
 pytest -q
 ruff check .
 ruff format --check .
+npm test --if-present
+npm run build --if-present
 ```
+
+Hardware-dependent releases also include current real-device, DFP, feeder, telemetry, process-lifecycle, and visible desktop acceptance.
