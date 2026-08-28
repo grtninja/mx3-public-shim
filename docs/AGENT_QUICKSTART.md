@@ -12,6 +12,19 @@ Apply high effort and thorough reasoning. Complete the requested public MX3 work
 
 The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth. The desktop application owns the visible Control Center workflow.
 
+## Operating rules
+
+- Keep the Electron shell frontend-only; it must not start, stop, rebind, or implicitly bounce backend runtime services.
+- Treat this public app as an MX3 DFP, feeder, device, and telemetry control surface over already-running services.
+- Keep model loading and residency with direct LM Studio at `http://127.0.0.1:1234/v1`; do not infer model state from MX3 support telemetry.
+- Do not infer feeder truth from embedding availability.
+- Do not claim that MX3 is live unless feeder/runtime alignment and telemetry support it.
+- If the MX3 support service is healthy, do not bounce it merely to restore an optional side lane.
+
+## Feeder rule
+
+Unlock MX3 hardware before feeder start or restart. Keep unlock, DFP selection, and feeder start as explicit operator actions.
+
 ## Complete workflow
 
 1. Read `README.md`, `CONTRIBUTING.md`, and `docs/PUBLIC_BOUNDARIES.md`.
