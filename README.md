@@ -18,17 +18,15 @@ The physical-hardware workflow uses a supported MemryX AI Accelerator. Developme
 4. Shows current device identity, telemetry, latency, throughput, thermals, TPK, and savings evidence.
 5. Presents a public desktop control and telemetry workflow over the repository-owned backend.
 6. Supports local embedding and reranking examples for memory and retrieval applications.
-7. Keeps language-model loading and residency with the selected model host.
+7. Keeps language-model loading and residency with direct LM Studio at `http://127.0.0.1:1234/v1`.
 
 ## Runtime roles
 
-- `http://127.0.0.1:1234/v1` — local model host when LM Studio is selected.
-- `http://127.0.0.1:9000` — MX3 device, DFP, feeder, telemetry, and compatibility service plane.
-- `http://127.0.0.1:2236/v1` — dedicated embedding lane where configured.
-- `http://127.0.0.1:2337/v1` — explicitly selected optional hosted chat lane.
-- `http://127.0.0.1:10000` — internal MX3 manager and hardware boundary.
+- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint.
+- `http://127.0.0.1:9000` — MX3 support-only service for device, DFP, feeder, telemetry, and accelerator state.
+- `http://127.0.0.1:10000` — MX3 manager and hardware-support boundary.
 
-The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth. The desktop application owns the visible Control Center workflow.
+LM model loading belongs to LM Studio, not this app. The MX3 service supplies support and hardware state; it is not the model host. The desktop application owns the visible Control Center workflow.
 
 ## MemPalace integration
 
@@ -63,7 +61,6 @@ More detail:
 
 Use the public agent contract and boundaries:
 
-- `AGENTS.md`
 - `docs/AGENT_QUICKSTART.md`
 - `docs/PUBLIC_BOUNDARIES.md`
 - `docs/PUBLIC_FILE_MAP.md`
@@ -89,7 +86,7 @@ The published generator plugin `memryx-shim-provider` can connect LM Studio work
 
 Install page: `https://www.lmstudio.ai/grtninja/memryx-shim-provider`
 
-The plugin remains an adapter. LM Studio retains ownership of its loaded language models; the MX3 backend retains ownership of device, DFP, feeder, telemetry, and accelerator execution state.
+The plugin remains an adapter. LM Studio retains ownership of its loaded language models at `http://127.0.0.1:1234/v1`; the MX3 backend retains ownership of device, DFP, feeder, telemetry, and accelerator support state.
 
 ## Official links
 

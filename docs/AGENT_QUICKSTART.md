@@ -6,17 +6,15 @@ Apply high effort and thorough reasoning. Complete the requested public MX3 work
 
 ## Runtime roles
 
-1. `http://127.0.0.1:1234/v1` is the selected local model host when LM Studio is used.
-2. `http://127.0.0.1:9000` is the MX3 device, DFP, feeder, telemetry, and compatibility service plane.
-3. `http://127.0.0.1:2236/v1` is the dedicated embedding lane where configured.
-4. `http://127.0.0.1:2337/v1` is the explicitly selected optional hosted chat lane.
-5. `http://127.0.0.1:10000` is the internal MX3 manager and hardware boundary.
+1. `http://127.0.0.1:1234/v1` is the direct LM Studio model endpoint.
+2. `http://127.0.0.1:9000` is the MX3 support-only service for device, DFP, feeder, telemetry, and accelerator state.
+3. `http://127.0.0.1:10000` is the MX3 manager and hardware-support boundary.
 
 The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth. The desktop application owns the visible Control Center workflow.
 
 ## Complete workflow
 
-1. Read `AGENTS.md`, `README.md`, `CONTRIBUTING.md`, and `docs/PUBLIC_BOUNDARIES.md`.
+1. Read `README.md`, `CONTRIBUTING.md`, and `docs/PUBLIC_BOUNDARIES.md`.
 2. Bind the exact request, repository head, runtime route, physical or fixture device class, DFP target, output, and acceptance criteria.
 3. Verify backend, manager, device, DFP, feeder, embedding, and desktop state from their owning surfaces.
 4. Implement the complete correction across source, tests, package metadata, and public documentation.
@@ -47,7 +45,7 @@ Development fixtures remain explicitly labeled as fixtures and carry synthetic p
 
 ## Public boundary
 
-Keep release-facing source, documentation, UI copy, and examples public-safe, standalone, repository-relative, source-attributable, and free of private credentials or workstation topology. Use official upstream references and current public product terminology.
+Keep release-facing source, documentation, UI copy, and examples safe for public release, standalone, repository-relative, source-attributable, and free of private credentials or workstation topology. Use official upstream references and current public product terminology.
 
 ## Validation
 

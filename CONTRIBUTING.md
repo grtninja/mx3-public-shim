@@ -44,22 +44,20 @@ Keep public source and documentation in this form:
 - public product, package, endpoint, and schema names;
 - official upstream and vendor links;
 - complete human and AI-agent quick starts;
-- public-safe configuration and fixtures;
+- configuration and fixtures that are safe for public release;
 - secrets-free documentation and UI text;
 - current support, security, contribution, and release guidance;
 - source-attributable dependencies and assets.
 
-Private workstation topology, private repository names, credentials, raw private evidence, internal coordination, and private export machinery remain in their owning private source lane.
+Private workstation topology, private repository names, credentials, raw private evidence, internal coordination, and private export machinery remain in their owning private source lane. Keep internal stack lore out of this public shim repository.
 
 ## Runtime ownership
 
 Keep service roles explicit:
 
-- `http://127.0.0.1:1234/v1` — selected local model host when LM Studio is used;
-- `http://127.0.0.1:9000` — MX3 device, DFP, feeder, telemetry, and compatibility services;
-- `http://127.0.0.1:2236/v1` — dedicated embedding lane where configured;
-- `http://127.0.0.1:2337/v1` — explicitly selected optional hosted chat lane;
-- `http://127.0.0.1:10000` — internal MX3 manager and hardware boundary.
+- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint;
+- `http://127.0.0.1:9000` — MX3 support-only service for device, DFP, feeder, telemetry, and accelerator state;
+- `http://127.0.0.1:10000` — MX3 manager and hardware-support boundary.
 
 The public desktop application owns its Control Center workflow. The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth.
 
@@ -67,8 +65,8 @@ The public desktop application owns its Control Center workflow. The selected mo
 
 For behavior shared with the authoritative runtime provider or published integration plugin:
 
-1. land and validate the authoritative runtime-provider change;
-2. synchronize and publish the integration plugin when its contract changes;
+1. land and validate the authoritative shim change;
+2. synchronize and publish the published plugin `memryx-shim-provider` when its contract changes;
 3. update this public repository with current compatibility evidence;
 4. run target-repository tests, package checks, public hygiene, and visible application acceptance;
 5. publish through the approved public pull-request and release workflow.

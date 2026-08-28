@@ -4,7 +4,8 @@ This glossary describes the visible values in the public desktop app.
 
 ## Status pills
 
-- `Inference Plane`: the public aggregate inference plane. Expected public value: `127.0.0.1:9000/v1`.
+- `LM Studio`: the direct local model endpoint. Expected public value: `127.0.0.1:1234/v1`.
+- `MX3 Support`: support-only device, DFP, feeder, and telemetry service. Expected public value: `127.0.0.1:9000`.
 - `MX3 Manager`: the MX3 manager/hardware-management boundary. Expected public value: `127.0.0.1:10000`.
 - `MX3 Device`: visible driver and chip detection reported by the runtime.
 - `Feeder`: current DFP/feeder state for the MX3 lane.
@@ -36,7 +37,7 @@ This glossary describes the visible values in the public desktop app.
 
 ## Routing Details
 
-- Displays the current public lane contract, active DFP, feeder state, and temperature-source labels.
+- Displays the direct LM Studio model endpoint, MX3 support-only service, active DFP, feeder state, and temperature-source labels.
 
 ## Common placeholder states
 

@@ -12,14 +12,10 @@ This repository is:
 
 ## Ownership boundaries
 
-- The selected local model host owns language-model loading and residency.
-- The MX3 backend owns device discovery, manager interaction, DFP state, feeder state, telemetry, and accelerator execution.
+- The selected local model host at `http://127.0.0.1:1234/v1` owns language-model loading and residency.
+- The MX3 backend at `http://127.0.0.1:9000` is support-only and owns device discovery, manager interaction, DFP state, feeder state, telemetry, and accelerator execution.
 - The public desktop application owns its visible Control Center workflow.
-- `http://127.0.0.1:1234/v1` is the selected local model host when LM Studio is used.
-- `http://127.0.0.1:9000` is the MX3 device, DFP, feeder, telemetry, and compatibility service plane.
-- `http://127.0.0.1:2236/v1` is the dedicated embedding lane where configured.
-- `http://127.0.0.1:2337/v1` is the explicitly selected optional hosted chat lane.
-- `http://127.0.0.1:10000` is the internal MX3 manager and hardware boundary.
+- `http://127.0.0.1:10000` is the MX3 manager and hardware-support boundary.
 
 ## Hardware and update boundary
 
@@ -31,7 +27,7 @@ Release-facing content contains:
 
 - public product and repository names;
 - repository-relative commands and paths;
-- public-safe configuration and examples;
+- configuration and examples safe for public release;
 - official upstream and vendor links;
 - source-attributable packages and assets;
 - current quick-start, validation, support, security, and release guidance;
