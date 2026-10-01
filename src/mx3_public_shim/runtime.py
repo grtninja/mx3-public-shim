@@ -71,7 +71,8 @@ class LocalRuntime:
             except Exception as exc:  # noqa: BLE001 - chain falls through to next provider
                 logger.warning("embeddings provider %s failed, trying next: %s", provider.name, exc)
                 errors.append(f"{provider.name}: {exc}")
-        raise RuntimeError(f"All embedding providers failed: {'; '.join(errors) or 'none available'}")
+        detail = "; ".join(errors) or "none available"
+        raise RuntimeError(f"All embedding providers failed: {detail}")
 
     def generate(
         self,
@@ -94,7 +95,8 @@ class LocalRuntime:
             except Exception as exc:  # noqa: BLE001 - chain falls through to next provider
                 logger.warning("chat provider %s failed, trying next: %s", provider.name, exc)
                 errors.append(f"{provider.name}: {exc}")
-        raise RuntimeError(f"All chat providers failed: {'; '.join(errors) or 'none available'}")
+        detail = "; ".join(errors) or "none available"
+        raise RuntimeError(f"All chat providers failed: {detail}")
 
     def chat(
         self,
