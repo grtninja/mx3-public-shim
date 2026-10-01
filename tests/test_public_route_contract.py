@@ -29,9 +29,15 @@ def test_public_docs_distinguish_lm_studio_from_mx3_support():
     assert "http://127.0.0.1:9000/v1" not in docs
 
 
-def test_frontend_labels_model_and_support_routes_separately():
+def test_frontend_talks_only_to_bundled_backend():
+    # Public contract: the bundled UI talks ONLY to the backend shipped in
+    # this repo (same-origin, or :9015 for the file:// desktop shell). The
+    # private-workstation MX3 support service (:9000) and manager boundary
+    # (:10000) are not part of this repository and the UI must not call them.
+    # (Muse)
     frontend = (ROOT / "src/mx3_public_shim/frontend/app.js").read_text(encoding="utf-8")
 
-    assert "LM Studio: 127.0.0.1:1234/v1" in frontend
-    assert "MX3 support: 127.0.0.1:9000" in frontend
+    assert "127.0.0.1:9015" in frontend
+    assert "127.0.0.1:9000" not in frontend
+    assert "127.0.0.1:10000" not in frontend
     assert "Inference: 127.0.0.1:9000/v1" not in frontend

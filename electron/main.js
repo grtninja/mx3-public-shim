@@ -3,7 +3,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { app, BrowserWindow, screen } = require('electron');
 
-const WINDOW_TITLE = 'NEXUS CONTROL CENTER: MEMRYX MX3';
+const WINDOW_TITLE = 'MX3 Public Shim';
 const REPO_ROOT = path.resolve(__dirname, '..');
 const FRONTEND_ENTRY = path.join(REPO_ROOT, 'src', 'mx3_public_shim', 'frontend', 'index.html');
 const STARTUP_LOG = path.join(os.tmpdir(), 'mx3-public-shim-electron.log');

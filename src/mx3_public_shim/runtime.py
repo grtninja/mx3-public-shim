@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from typing import Any
@@ -7,6 +8,8 @@ from typing import Any
 from .config import Settings
 from .providers import CPUReferenceProvider, MX3LinuxProvider, OpenAICompatProvider
 from .providers.base import BaseProvider, ProviderStatus
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -27,7 +30,8 @@ class LocalRuntime:
     def provider_statuses(self) -> list[ProviderStatus]:
         return [self._providers[name].status() for name in self._providers]
 
-    def _select_provider(self, capability: str) -> BaseProvider:
+    def _providers_for(self, capability: str) -> list[BaseProvider]:
+        providers: list[BaseProvider] = []
         for name in self.settings.provider_order:
             provider = self._providers.get(name)
             if provider is None:
@@ -37,8 +41,14 @@ class LocalRuntime:
                 status.supports_embeddings if capability == "embeddings" else status.supports_chat
             )
             if status.available and supported:
-                return provider
-        raise RuntimeError(f"No provider available for capability={capability}")
+                providers.append(provider)
+        return providers
+
+    def _select_provider(self, capability: str) -> BaseProvider:
+        providers = self._providers_for(capability)
+        if not providers:
+            raise RuntimeError(f"No provider available for capability={capability}")
+        return providers[0]
 
     def selected_providers(self) -> list[SelectedProvider]:
         selections: list[SelectedProvider] = []
@@ -51,8 +61,18 @@ class LocalRuntime:
         return selections
 
     def embed(self, texts: Iterable[str], model: str | None = None) -> list[list[float]]:
-        provider = self._select_provider("embeddings")
-        return provider.embed(list(texts), model=model)
+        # Provider chain: try each capable provider in order, falling through
+        # on failure so the deterministic CPU reference answers when the
+        # configured endpoint is unreachable. (Muse)
+        errors: list[str] = []
+        for provider in self._providers_for("embeddings"):
+            try:
+                return provider.embed(list(texts), model=model)
+            except Exception as exc:  # noqa: BLE001 - chain falls through to next provider
+                logger.warning("embeddings provider %s failed, trying next: %s", provider.name, exc)
+                errors.append(f"{provider.name}: {exc}")
+        detail = "; ".join(errors) or "none available"
+        raise RuntimeError(f"All embedding providers failed: {detail}")
 
     def generate(
         self,
@@ -62,13 +82,21 @@ class LocalRuntime:
         max_tokens: int = 256,
         temperature: float = 0.2,
     ) -> str:
-        provider = self._select_provider("chat")
-        return provider.generate(
-            prompt,
-            model=model,
-            max_tokens=max_tokens,
-            temperature=temperature,
-        )
+        # Provider chain: fall through on failure like embed(). (Muse)
+        errors: list[str] = []
+        for provider in self._providers_for("chat"):
+            try:
+                return provider.generate(
+                    prompt,
+                    model=model,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                )
+            except Exception as exc:  # noqa: BLE001 - chain falls through to next provider
+                logger.warning("chat provider %s failed, trying next: %s", provider.name, exc)
+                errors.append(f"{provider.name}: {exc}")
+        detail = "; ".join(errors) or "none available"
+        raise RuntimeError(f"All chat providers failed: {detail}")
 
     def chat(
         self,

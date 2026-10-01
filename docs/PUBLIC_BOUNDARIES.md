@@ -13,9 +13,8 @@ This repository is:
 ## Ownership boundaries
 
 - The selected local model host at `http://127.0.0.1:1234/v1` owns language-model loading and residency.
-- The MX3 backend at `http://127.0.0.1:9000` is support-only and owns device discovery, manager interaction, DFP state, feeder state, telemetry, and accelerator execution.
-- The public desktop application owns its visible Control Center workflow.
-- `http://127.0.0.1:10000` is the MX3 manager and hardware-support boundary.
+- This repository's backend at `http://127.0.0.1:9015` owns the embeddings route, chat forwarding, provider-chain order, and the bundled status UI.
+- The private-workstation MX3 support-only service (`:9000`) and manager boundary (`:10000`) are not part of this repository. This app does not call them; do not add calls to them. (Muse)
 
 ## Hardware and update boundary
 

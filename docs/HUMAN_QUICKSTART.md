@@ -1,37 +1,41 @@
 # Human quickstart
 
+## What this app is
+
+A small local backend plus a bundled status UI. It serves local embeddings
+over `POST /v1/embeddings` through a provider chain (direct MX3 runtime on
+Linux, your own LM Studio, or a deterministic CPU reference), and forwards
+`POST /v1/chat/completions` to your configured OpenAI-compatible endpoint
+(LM Studio at `http://127.0.0.1:1234/v1` by default). The status UI shows the
+live provider chain, device state, and configuration.
+
 ## Hardware requirement
 
-This app requires a MemryX AI Accelerator.
-
-If the hardware is not present, the MX3 path will not validate and the DFP, feeder, and telemetry surfaces will stay unavailable.
+MX3 hardware is optional. Without a MemryX AI Accelerator on Linux, the
+chain falls through to LM Studio or the deterministic CPU reference, and the
+device panel reports the runtime as unavailable. (Muse)
 
 ## First-use path
 
-1. Open the desktop app.
-2. Checks green.
-3. Load a DFP.
-4. If the feeder is not already live, unlock MX3 and start the feeder.
-5. Use LM Studio directly at `http://127.0.0.1:1234/v1` for model loading and inference.
-6. Use the MX3 support-only service at `http://127.0.0.1:9000` for device, DFP, feeder, and telemetry state.
-7. Read telemetry and evidence in the app.
+1. Start the backend: `python -m mx3_public_shim.server`.
+2. Open `http://127.0.0.1:9015` — the backend status pill should read green.
+3. Confirm the provider chain shows which provider answers embeddings and chat.
+4. Use LM Studio directly at `http://127.0.0.1:1234/v1` for model loading and inference.
 
 ## What to confirm in the UI
 
-- `LM Studio`: should show the direct model endpoint on `127.0.0.1:1234/v1`.
-- `MX3 Support`: should show the support-only service on `127.0.0.1:9000`.
-- `MX3 Manager`: should show the MX3 manager on `127.0.0.1:10000`.
-- `MX3 Device`: should show driver/chip detection when the device is visible.
-- `Feeder`: should move from `Disabled` or `standby` to a real active state after DFP + unlock/start.
+- `Chat provider chain`: which provider answers `POST /v1/chat/completions`.
+- `Embeddings provider chain`: which provider answers `POST /v1/embeddings`.
+- `Device`: MX3 runtime visibility (unavailable without hardware/driver on Linux).
+- `Shipped backend status`: this repo's backend on `127.0.0.1:9015`.
 
 ## What this app controls
 
-- DFP selection/import.
-- Feeder lifecycle.
-- MX3 telemetry and evidence.
+- The local embeddings route and provider chain order.
+- The chat forward target (`MX3_PUBLIC_SHIM_OPENAI_BASE_URL`).
 
 ## What this app does not control
 
 - LM model loading. That belongs to LM Studio or the operator's chosen inference host.
 - Vendor firmware updates.
-- Private workstation-only services.
+- Private workstation-only services (`:9000` MX3 support, `:10000` manager boundary) — they are not part of this repository and this app does not call them.

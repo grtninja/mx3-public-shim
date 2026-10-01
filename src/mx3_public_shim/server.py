@@ -5,6 +5,7 @@ from typing import Any
 
 import uvicorn
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 
 from .config import Settings
@@ -18,6 +19,15 @@ def build_app(settings: Settings | None = None) -> FastAPI:
     resolved = settings or Settings.from_env()
     runtime = LocalRuntime(resolved)
     app = FastAPI(title=resolved.frontend_title)
+    # The bundled desktop shell loads the frontend from file:// and calls back
+    # here. This service binds loopback only, so permissive CORS is safe and
+    # required for the documented desktop path to work.
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["GET", "POST"],
+        allow_headers=["Content-Type", "Accept", "Authorization"],
+    )
 
     @app.get("/")
     def root() -> FileResponse:
@@ -72,6 +82,13 @@ def build_app(settings: Settings | None = None) -> FastAPI:
 
     @app.post("/v1/chat/completions")
     async def chat_completions(request: Request) -> dict[str, Any]:
+        # Reconciliation note: the private shim retired chat from its own
+        # surface (410 Gone — "use the PAIR front door :1234"). The public
+        # shim keeps this route as a thin forward to the operator's configured
+        # OpenAI-compatible endpoint, which defaults to LM Studio at
+        # http://127.0.0.1:1234/v1 — the same destination. The shim never
+        # serves chat itself; without a configured endpoint the deterministic
+        # CPU reference answers so the route stays testable offline.
         payload = await request.json()
         content = runtime.chat(
             payload.get("messages", []),

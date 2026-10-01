@@ -11,7 +11,9 @@ except ImportError as exc:  # pragma: no cover
     raise SystemExit("Install chromadb before running this example.") from exc
 
 
-EMBEDDINGS_URL = "http://127.0.0.1:9000/v1/embeddings"
+# Points at this repository's bundled backend. The private-workstation
+# MX3 support service (:9000) is not part of this repo. (Muse)
+EMBEDDINGS_URL = "http://127.0.0.1:9015/v1/embeddings"
 EMBED_MODEL = "text-embedding-nomic-embed-text-v1.5"
 
 
