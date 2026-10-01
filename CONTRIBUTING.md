@@ -55,11 +55,16 @@ Private workstation topology, private repository names, credentials, raw private
 
 Keep service roles explicit:
 
-- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint;
-- `http://127.0.0.1:9000` — MX3 support-only service for device, DFP, feeder, telemetry, and accelerator state;
-- `http://127.0.0.1:10000` — MX3 manager and hardware-support boundary.
+- `http://127.0.0.1:9015` — this repository's backend: status UI plus
+  `/healthz`, `/api/provider-status`, `/v1/models`, `/v1/embeddings`,
+  `/v1/chat/completions`;
+- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint.
 
-The public desktop application owns its Control Center workflow. The selected model host owns language-model loading and residency. The MX3 backend owns device, DFP, feeder, telemetry, and accelerator execution truth.
+The private-workstation MX3 support-only service (`:9000`) and manager
+boundary (`:10000`) are not part of this repository. This app does not call
+them; do not add calls to them. The public desktop application owns its
+status-UI workflow. The selected model host owns language-model loading and
+residency. (Muse)
 
 ## Shared release order
 

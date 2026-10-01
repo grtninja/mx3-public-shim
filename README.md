@@ -1,56 +1,73 @@
-# NEXUS CONTROL CENTER: MemryX MX3
+# MX3 Public Shim
 
-`NEXUS CONTROL CENTER` is a public Windows-first application for controlling, observing, and validating MemryX MX3 device workflows.
+`mx3-public-shim` is a public, standalone MemryX MX3 companion: a small Python
+backend plus a bundled status UI. It gives you local embeddings and chat
+routing over a provider chain — direct MX3 runtime on Linux, your own
+LM Studio, or a deterministic CPU reference — with a visible status page for
+the provider chain and device state.
 
-![NEXUS CONTROL CENTER app screenshot](docs/images/nexus-control-center-reference.png)
-
-Use it to validate the MX3 device path, load DFP runtimes, control feeder state, and inspect current hardware telemetry and evidence.
+![MX3 Public Shim app screenshot](docs/images/nexus-control-center-reference.png)
 
 ## Hardware requirement
 
-The physical-hardware workflow uses a supported MemryX AI Accelerator. Development and interface tests use explicitly labeled fixtures with synthetic provenance. Real-device acceptance uses current physical-device, DFP, feeder, execution, and telemetry evidence.
+The physical-hardware path uses a supported MemryX AI Accelerator on Linux
+with the official MemryX Python runtime and a compiled embedding DFP.
+Development and interface tests use the explicitly labeled CPU reference with
+synthetic provenance. Real-device acceptance uses current physical-device
+evidence.
 
 ## Product capabilities
 
-1. Checks MX3 device and manager readiness.
-2. Inventories, loads, and switches admitted DFP runtime targets.
-3. Controls feeder start, stop, unlock, reset, and recovery through owned lifecycle paths.
-4. Shows current device identity, telemetry, latency, throughput, thermals, TPK, and savings evidence.
-5. Presents a public desktop control and telemetry workflow over the repository-owned backend.
-6. Supports local embedding and reranking examples for memory and retrieval applications.
-7. Keeps language-model loading and residency with direct LM Studio at `http://127.0.0.1:1234/v1`.
+1. Reports MX3 device-runtime visibility (MemryX Python runtime + DFP path).
+2. Serves local embeddings over `POST /v1/embeddings` via the provider chain.
+3. Routes chat over `POST /v1/chat/completions` to your configured
+   OpenAI-compatible endpoint (LM Studio at `http://127.0.0.1:1234/v1` by
+   default). The shim never serves chat itself.
+4. Shows the live provider chain, device state, and configuration in the
+   bundled status UI.
+5. Supports local embedding and reranking examples for memory and retrieval
+   applications.
+6. LM model loading belongs to LM Studio, not this app.
 
 ## Runtime roles
 
-- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint.
-- `http://127.0.0.1:9000` — MX3 support-only service for device, DFP, feeder, telemetry, and accelerator state.
-- `http://127.0.0.1:10000` — MX3 manager and hardware-support boundary.
+- `http://127.0.0.1:9015` — this repo's backend: status UI plus
+  `/healthz`, `/api/provider-status`, `/v1/models`, `/v1/embeddings`,
+  `/v1/chat/completions`.
+- `http://127.0.0.1:1234/v1` — direct LM Studio model endpoint (your model
+  host; chat and OpenAI-compatible embeddings route here by default).
 
-LM model loading belongs to LM Studio, not this app. The MX3 service supplies support and hardware state; it is not the model host. The desktop application owns the visible Control Center workflow.
+The MX3 support-only service (`http://127.0.0.1:9000`) and the MX3 manager
+boundary (`http://127.0.0.1:10000`) are private-workstation services. They
+are not part of this repository and this app does not call them.
 
 ## MemPalace integration
 
-Nexus Control Center can support MemPalace-style local retrieval at the accelerator seams while preserving the memory application's own structure and workflow:
+MX3 Public Shim can support MemPalace-style local retrieval at the accelerator seams while preserving the memory application's own structure and workflow:
 
 1. local embeddings for Chroma ingest and query;
 2. optional local reranking after retrieval;
-3. current hardware identity, latency, TPK, and savings evidence;
+3. current provider-chain and device visibility from `/api/provider-status`;
 4. explicit provenance for each accelerated route.
 
 ## TPK
 
 `TPK` means `tokens per kilowatt-hour`. It expresses how much useful token output a measured workflow produced for its energy use.
 
-A current TPK value requires admitted execution and energy evidence. The UI keeps TPK visibly unavailable or in a clearly labeled preview state until the required evidence exists.
+A current TPK value requires admitted execution and energy evidence. This status UI does not display TPK; treat the term as a concept definition for evidence discussions, not a UI element.
 
 ## Quick start
 
 ### Human workflow
 
-1. Confirm checks and device identity.
-2. Select and load an admitted DFP.
-3. Use the configured model or application route.
-4. Review feeder state, telemetry, execution evidence, and output.
+1. Start the backend: `python -m mx3_public_shim.server`.
+2. Open `http://127.0.0.1:9015` and confirm the checks are green.
+3. Call `POST /v1/embeddings` for local embeddings.
+4. Use LM Studio directly at `http://127.0.0.1:1234/v1` for model loading
+   and inference; `POST /v1/chat/completions` on this backend forwards
+   there by default.
+5. With MX3 hardware on Linux, set `MX3_PUBLIC_SHIM_EMBED_DFP` to your
+   compiled embedding DFP and install the official MemryX Python runtime.
 
 More detail:
 
@@ -86,7 +103,7 @@ The published generator plugin `memryx-shim-provider` can connect LM Studio work
 
 Install page: `https://www.lmstudio.ai/grtninja/memryx-shim-provider`
 
-The plugin remains an adapter. LM Studio retains ownership of its loaded language models at `http://127.0.0.1:1234/v1`; the MX3 backend retains ownership of device, DFP, feeder, telemetry, and accelerator support state.
+The plugin remains an adapter. LM Studio retains ownership of its loaded language models at `http://127.0.0.1:1234/v1`; this repo's backend at `http://127.0.0.1:9015` owns the embeddings route, chat forwarding, provider-chain order, and the status UI. The private-workstation MX3 support service (`:9000`) and manager boundary (`:10000`) are not part of this repository.
 
 ## Official links
 

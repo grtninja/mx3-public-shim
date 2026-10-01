@@ -31,3 +31,24 @@ def test_runtime_status_lists_boundaries():
 
     assert "mx3_linux" in names
     assert "cpu_reference" in names
+
+
+def test_runtime_falls_through_unreachable_openai_compat_to_cpu_reference():
+    # The default provider_order puts openai_compat first. With no LM Studio
+    # reachable at :1234, embed() and chat() must fall through to the
+    # deterministic CPU reference instead of raising. (Muse)
+    runtime = LocalRuntime(
+        Settings(
+            provider_order=("openai_compat", "cpu_reference"),
+            openai_base_url="http://127.0.0.1:1/v1",  # nothing listens here
+            request_timeout_seconds=1.0,
+            cpu_embedding_dimensions=12,
+        )
+    )
+
+    vectors = runtime.embed(["hello world"])
+    reply = runtime.chat([{"role": "user", "content": "Say hi"}])
+
+    assert len(vectors) == 1
+    assert len(vectors[0]) == 12
+    assert reply.startswith("cpu-reference:")
